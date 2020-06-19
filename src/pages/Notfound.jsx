@@ -14,7 +14,7 @@ const Content = Styled.div`
 export default class Notfound extends Component {
     goBack = (event) => {
       event.preventDefault();
-      this.props.history.goBack();
+      this.props.history.push('/login');
     }
 
     render() {

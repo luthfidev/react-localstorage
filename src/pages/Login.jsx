@@ -1,4 +1,6 @@
+/* eslint-disable no-undef */
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import Styled from 'styled-components';
 import { Card, Form, Button } from 'semantic-ui-react';
 import Swal from 'sweetalert2';
@@ -58,7 +60,7 @@ export default class Login extends Component {
          <Content>
               <Card>
                   <Card.Content>
-                  <Card.Header textAlign='center'>Register</Card.Header>
+                  <Card.Header textAlign='center'>Login</Card.Header>
                       <Form onSubmit={this.handlePost}>
                       <Form.Field>
                       <label>Email</label>
@@ -69,6 +71,7 @@ export default class Login extends Component {
                       <input name='password' value={this.state.password} onChange={this.handleChange} placeholder='Password' />
                       </Form.Field>
                       <Button type='submit'>Login</Button>
+                      <Link className="ui secondary button" to='/register'>Register</Link>
                       </Form>
                   </Card.Content>
               </Card>

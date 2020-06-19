@@ -8,13 +8,13 @@ const Content = Styled.div`
     `;
 
 export default class Home extends Component {
-    render() {
-        return (
+  render() {
+    return (
             <>
                 <Content>
-                    
+
                 </Content>
             </>
-        )
-    }
+    );
+  }
 }

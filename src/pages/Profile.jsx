@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { Component } from 'react';
 import { Card, Button, Form } from 'semantic-ui-react';
 import Styled from 'styled-components';
@@ -22,21 +23,25 @@ export default class Profile extends Component {
     };
   }
 
-onLogout = () => {
-  localStorage.removeItem('session');
-  this.props.history.push('/login');
-}
+  componentDidMount() {
+    this.fetchData();
+  }
 
-componentDidMount() {
-  const email = this.props.location.state;
-  const userData = JSON.parse(localStorage.getItem(email));
-  this.setState({ userData });
-}
+  fetchData = () => {
+    const email = this.props.location.state;
+    const userData = JSON.parse(localStorage.getItem(email));
+    this.setState({ userData });
+  }
 
-render() {
-  const editModalClose = () => this.setState({ editModalShow: false });
-  const { fullname, email, password } = this.state;
-  return (
+  onLogout = () => {
+    localStorage.removeItem('session');
+    this.props.history.push('/login');
+  }
+
+  render() {
+    const editModalClose = () => this.setState({ editModalShow: false });
+    const { fullname, email, password } = this.state;
+    return (
             <>
                 <Content>
                     <Card>
@@ -47,6 +52,7 @@ render() {
                         fullname={fullname}
                         email={email}
                         password={password}
+                        refreshdata={(e) => this.fetchData(e)}
                     />
                         <Card.Content>
                         <Card.Header textAlign='center'>Profile</Card.Header>
@@ -87,6 +93,6 @@ render() {
                     </Card>
                 </Content>
             </>
-  );
-}
+    );
+  }
 }

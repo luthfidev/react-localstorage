@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable import/prefer-default-export */
 import React, { Component } from 'react';
 import {
@@ -37,6 +38,8 @@ export class EditProfile extends Component {
     const isExist = JSON.parse(localStorage.getItem(userData.email));
     if (isExist) {
       localStorage.setItem(userData.email, JSON.stringify(userData));
+      this.props.onClose();
+      this.props.refreshdata();
       Swal.fire({
         title: 'Success !',
         text: 'Profile has updated',
