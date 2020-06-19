@@ -34,7 +34,8 @@ export default class Login extends Component {
     const isExist = JSON.parse(localStorage.getItem(userData.email));
     if (isExist) {
       if (isExist.email === this.state.email && isExist.password === this.state.password) {
-        this.props.history.push('/profile')
+        localStorage.setItem('session', isExist.email);
+        this.props.history.push('/profile', isExist.email);
       } else {
         Swal.fire({
           title: 'Sorry !',

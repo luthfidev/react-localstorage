@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Card, Button, Form } from 'semantic-ui-react';
+import { Card, Button, Form } from 'semantic-ui-react';
 import Styled from 'styled-components';
 
 import { EditProfile } from '../components/Profile/EditProfile';
@@ -17,21 +17,36 @@ export default class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      userData: [],
       editModalShow: false,
     };
   }
 
-  render() {
+onLogout = () => {
+  localStorage.removeItem('session');
+  this.props.history.push('/login');
+}
 
-    const editModalClose = () => this.setState({ editModalShow: false });
-    return (
+componentDidMount() {
+  const email = this.props.location.state;
+  const userData = JSON.parse(localStorage.getItem(email));
+  this.setState({ userData });
+}
+
+render() {
+  const editModalClose = () => this.setState({ editModalShow: false });
+  const { fullname, email, password } = this.state;
+  return (
             <>
                 <Content>
                     <Card>
                     <EditProfile
-                        dimmer='blurring'
+                        size='tiny'
                         open={this.state.editModalShow}
                         onClose={editModalClose}
+                        fullname={fullname}
+                        email={email}
+                        password={password}
                     />
                         <Card.Content>
                         <Card.Header textAlign='center'>Profile</Card.Header>
@@ -39,15 +54,15 @@ export default class Profile extends Component {
                             <Form>
                             <Form.Field>
                             <label>Fullname</label>
-                            <input placeholder='Fullname' />
+                            <input defaultValue={this.state.userData.fullname} placeholder='Fullname' />
                             </Form.Field>
                             <Form.Field>
                             <label>Email</label>
-                            <input placeholder='Email' />
+                            <input defaultValue={this.state.userData.email} placeholder='Email' />
                             </Form.Field>
                             <Form.Field>
                             <label>Password</label>
-                            <input placeholder='Password' />
+                            <input defaultValue={this.state.userData.password} placeholder='Password' />
                             </Form.Field>
                             </Form>
                         </Card.Description>
@@ -55,18 +70,23 @@ export default class Profile extends Component {
                         <Card.Content extra>
                             <div className='ui two buttons'>
                             <Button basic color='green' onClick={() => {
-                              this.setState({ editModalShow: true });
+                              this.setState({
+                                editModalShow: true,
+                                fullname: this.state.userData.fullname,
+                                email: this.state.userData.email,
+                                password: this.state.userData.password,
+                              });
                             }}>
                                 Update
                             </Button>
-                            <Button basic color='red'>
-                                Decline
+                            <Button basic color='red' onClick={this.onLogout}>
+                                Logout
                             </Button>
                             </div>
                         </Card.Content>
                     </Card>
                 </Content>
             </>
-    );
-  }
+  );
+}
 }
