@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Card, Button, Form } from 'semantic-ui-react';
+import {Card, Button, Form } from 'semantic-ui-react';
 import Styled from 'styled-components';
 
 import { EditProfile } from '../components/Profile/EditProfile';

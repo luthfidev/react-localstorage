@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Styled from 'styled-components';
 import { Card, Form, Button } from 'semantic-ui-react';
+import Swal from 'sweetalert2';
 
 const Content = Styled.div`
     display: flex;
@@ -12,6 +13,44 @@ const Content = Styled.div`
     `;
 
 export default class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: '',
+      password: '',
+    };
+  }
+
+  handleChange = (event) => {
+    this.setState({ [event.target.name]: event.target.value });
+  }
+
+  handlePost = (event) => {
+    event.preventDefault();
+    const userData = {
+      email: this.state.email,
+      password: this.state.password,
+    };
+    const isExist = JSON.parse(localStorage.getItem(userData.email));
+    if (isExist) {
+      if (isExist.email === this.state.email && isExist.password === this.state.password) {
+        this.props.history.push('/profile')
+      } else {
+        Swal.fire({
+          title: 'Sorry !',
+          text: 'Password Wrong',
+          icon: 'warning',
+        });
+      }
+    } else {
+      Swal.fire({
+        title: 'Sorry !',
+        text: 'Please Register first !',
+        icon: 'warning',
+      });
+    }
+  }
+
   render() {
     return (
       <>
@@ -19,14 +58,14 @@ export default class Login extends Component {
               <Card>
                   <Card.Content>
                   <Card.Header textAlign='center'>Register</Card.Header>
-                      <Form>
+                      <Form onSubmit={this.handlePost}>
                       <Form.Field>
                       <label>Email</label>
-                      <input placeholder='Email' />
+                      <input name='email' value={this.state.email} onChange={this.handleChange} placeholder='Email' />
                       </Form.Field>
                       <Form.Field>
                       <label>Password</label>
-                      <input placeholder='Password' />
+                      <input name='password' value={this.state.password} onChange={this.handleChange} placeholder='Password' />
                       </Form.Field>
                       <Button type='submit'>Login</Button>
                       </Form>
