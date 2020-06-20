@@ -1,6 +1,7 @@
+/* eslint-disable no-undef */
 import React, { Component } from 'react';
 import Styled from 'styled-components';
-import { Button, Menu } from 'semantic-ui-react';
+import { Button, Menu, Dropdown } from 'semantic-ui-react';
 
 const Content = Styled.div`
     width: 100%;
@@ -16,6 +17,11 @@ export default class NavBar extends Component {
   }
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+
+  onLogout = () => {
+    localStorage.removeItem('session');
+    this.props.history.push('/');
+  }
 
   render() {
     const { activeItem } = this.state;
@@ -35,6 +41,12 @@ export default class NavBar extends Component {
                   />
                   {this.props.isLogin
                     && <Menu.Menu position='right'>
+                        <Dropdown text='Setting' pointing className='link item'>
+                          <Dropdown.Menu>
+                            <Dropdown.Header>Settings</Dropdown.Header>
+                            <Dropdown.Item onClick={this.onLogout}>Logout</Dropdown.Item>
+                          </Dropdown.Menu>
+                        </Dropdown>
                     <Menu.Item>
                       <Button primary>Home</Button>
                     </Menu.Item>

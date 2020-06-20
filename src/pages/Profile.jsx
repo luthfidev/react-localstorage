@@ -1,23 +1,28 @@
 /* eslint-disable no-undef */
 import React, { Component } from 'react';
-import { Card, Button, Form } from 'semantic-ui-react';
 import Styled from 'styled-components';
+import {
+  Button,
+  Segment,
+  Sidebar,
+  Form,
+  Card,
+  Label,
+} from 'semantic-ui-react';
+import SideBar from '../components/SideBar';
 
 import { EditProfile } from '../components/Profile/EditProfile';
 
 const Content = Styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 100%;
     height: 100%;
+    width: 100%;
     `;
 
 export default class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      activeItem: 'profile',
       userData: [],
       editModalShow: false,
     };
@@ -25,6 +30,11 @@ export default class Profile extends Component {
 
   componentDidMount() {
     this.fetchData();
+  }
+
+  onLogout = () => {
+    localStorage.removeItem('session');
+    this.props.history.push('/');
   }
 
   fetchData = () => {
@@ -36,18 +46,17 @@ export default class Profile extends Component {
     this.setState({ userData });
   }
 
-  onLogout = () => {
-    localStorage.removeItem('session');
-    this.props.history.push('/');
-  }
-
   render() {
     const editModalClose = () => this.setState({ editModalShow: false });
     const { fullname, email, password } = this.state;
     return (
             <>
-                <Content>
-                    <Card>
+            <Content>
+               <Sidebar.Pushable as={Segment}>
+                <SideBar/>
+                <Sidebar.Pusher>
+                  <Segment basic>
+                  <Card>
                     <EditProfile
                         size='tiny'
                         open={this.state.editModalShow}
@@ -58,20 +67,22 @@ export default class Profile extends Component {
                         refreshdata={(e) => this.fetchData(e)}
                     />
                         <Card.Content>
-                        <Card.Header textAlign='center'>Profile</Card.Header>
+                        <Label as='a' color='red' ribbon='right'>
+                          Profile
+                        </Label>
                         <Card.Description>
                             <Form>
                             <Form.Field>
                             <label>Fullname</label>
-                            <input defaultValue={this.state.userData.fullname} placeholder='Fullname' />
+                            <input disabled defaultValue={this.state.userData.fullname} placeholder='Fullname' />
                             </Form.Field>
                             <Form.Field>
                             <label>Email</label>
-                            <input defaultValue={this.state.userData.email} placeholder='Email' />
+                            <input disabled defaultValue={this.state.userData.email} placeholder='Email' />
                             </Form.Field>
                             <Form.Field>
                             <label>Password</label>
-                            <input defaultValue={this.state.userData.password} placeholder='Password' />
+                            <input disabled defaultValue={this.state.userData.password} placeholder='Password' />
                             </Form.Field>
                             </Form>
                         </Card.Description>
@@ -94,7 +105,10 @@ export default class Profile extends Component {
                             </div>
                         </Card.Content>
                     </Card>
-                </Content>
+                  </Segment>
+                </Sidebar.Pusher>
+              </Sidebar.Pushable>
+            </Content>
             </>
     );
   }

@@ -33,7 +33,7 @@ export default class SideBar extends Component {
                   </Link>
                   <Link to="/profile">
                     <Menu.Item as='a'>
-                        <Icon name='id card outline' />
+                        <Icon name='profile id card outline' />
                         Profile
                   </Menu.Item>
                   </Link>

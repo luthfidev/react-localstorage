@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import {
   BrowserRouter,
+  Router,
   Route,
   Switch,
 } from 'react-router-dom';
@@ -39,7 +40,8 @@ export default class App extends Component {
   render() {
     return (
       <>
-        <BrowserRouter history={history}>
+        <BrowserRouter>
+        <Router history={history}>
           <NavBar isLogin={this.state.isLogin} check={() => this.checkLogin()}/>
             <Switch>
               <Route exact path='/register' component={Register}/>
@@ -48,6 +50,7 @@ export default class App extends Component {
               <Route exact path='/profile' component={Profile}/>
               <Route component={Notfound}/>
             </Switch>
+        </Router>
         </BrowserRouter>
       </>
     );
