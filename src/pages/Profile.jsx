@@ -2,11 +2,13 @@
 import React, { Component } from 'react';
 import Styled from 'styled-components';
 import {
+  Grid,
   Button,
   Segment,
   Sidebar,
   Divider,
   Menu,
+  Placeholder,
 } from 'semantic-ui-react';
 import SideBar from '../components/SideBar';
 
@@ -25,11 +27,17 @@ export default class Profile extends Component {
       userData: [],
       editModalShow: false,
       visible: false,
+      isLoading: false,
     };
   }
 
   componentDidMount() {
-    this.fetchData();
+    this.setState({ isLoading: true });
+    setTimeout(() => {
+      this.setState({ isLoading: false }, () => {
+        this.fetchData();
+      });
+    }, 5000);
   }
 
   onLogout = () => {
@@ -57,6 +65,7 @@ export default class Profile extends Component {
       email,
       password,
       visible,
+      isLoading,
     } = this.state;
     return (
             <>
@@ -88,7 +97,26 @@ export default class Profile extends Component {
                         password={password}
                         refreshdata={(e) => this.fetchData(e)}
                     />
-                       <div className="profile-card">
+                    {isLoading
+                    && <Grid columns={3} stackable>
+                    <Grid.Column>
+                     <Segment raised>
+                      <Placeholder>
+                        <Placeholder.Header image>
+                          <Placeholder.Line />
+                          <Placeholder.Line />
+                        </Placeholder.Header>
+                        <Placeholder.Paragraph>
+                          <Placeholder.Line length='medium' />
+                          <Placeholder.Line length='short' />
+                        </Placeholder.Paragraph>
+                      </Placeholder>
+                    </Segment>
+                    </Grid.Column>
+                    </Grid>
+                    }
+                    {!isLoading
+                       && <div className="profile-card">
                           <div className="profile-card-head">
                               <img className="profile-img" src={require('../assets/avatar.png')}/>
                           </div>
@@ -116,6 +144,7 @@ export default class Profile extends Component {
                               </div>
                           </div>
                       </div>
+                    }
                   </Segment>
                 </Sidebar.Pusher>
               </Sidebar.Pushable>

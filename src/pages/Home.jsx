@@ -8,6 +8,7 @@ import {
   Menu,
   Button,
   Label,
+  Placeholder,
 } from 'semantic-ui-react';
 
 import SideBar from '../components/SideBar';
@@ -23,11 +24,17 @@ export default class Home extends Component {
     this.state = {
       visible: false,
       userData: [],
+      isLoading: false,
     };
   }
 
   componentDidMount() {
-    this.fetchData();
+    this.setState({ isLoading: true });
+    setTimeout(() => {
+      this.setState({ isLoading: false }, () => {
+        this.fetchData();
+      });
+    }, 5000);
   }
 
   fetchData = () => {
@@ -49,6 +56,7 @@ export default class Home extends Component {
       spaced: 'right',
       src: require('../assets/avatar.png'),
     };
+    const { isLoading } = this.state;
     const { visible } = this.state;
     return (
             <>
@@ -71,7 +79,21 @@ export default class Home extends Component {
                       onClick={this.handleAnimationChange}
                       ></Button>
                     </div>
-                    <Header as='h3'>Welcome, back <Label as='a' color='teal' content={this.state.userData.fullname} image={imageProps} /> !</Header>
+                    {isLoading
+                      && <Placeholder>
+                      <Placeholder.Header image>
+                        <Placeholder.Line />
+                        <Placeholder.Line />
+                      </Placeholder.Header>
+                      <Placeholder.Paragraph>
+                        <Placeholder.Line length='medium' />
+                        <Placeholder.Line length='short' />
+                      </Placeholder.Paragraph>
+                    </Placeholder>
+                    }
+                    {!isLoading
+                      && <Header as='h3'>Welcome, back <Label as='a' color='teal' content={this.state.userData.fullname} image={imageProps} /> !</Header>
+                    }
                   </Segment>
                 </Sidebar.Pusher>
               </Sidebar.Pushable>
