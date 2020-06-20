@@ -11,7 +11,7 @@ const Content = Styled.div`
     align-items: center;
     flex-direction: column;
     width: 100%;
-    height: 100%;
+    height: 75%;
     `;
 
 function ValidationMessage(props) {

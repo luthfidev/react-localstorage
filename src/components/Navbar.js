@@ -24,12 +24,11 @@ export default class NavBar extends Component {
   }
 
   render() {
-    const { activeItem } = this.state;
     return (
             <>
                 <Content>
                 <Menu size='tiny'>
-                  <Menu.Item
+                 {/*  <Menu.Item
                     name='home'
                     active={activeItem === 'home'}
                     onClick={this.handleItemClick}
@@ -38,7 +37,7 @@ export default class NavBar extends Component {
                     name='messages'
                     active={activeItem === 'messages'}
                     onClick={this.handleItemClick}
-                  />
+                  /> */}
                   {this.props.isLogin
                     && <Menu.Menu position='right'>
                         <Dropdown text='Setting' pointing className='link item'>

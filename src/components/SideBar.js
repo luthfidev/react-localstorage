@@ -16,14 +16,7 @@ export default class SideBar extends Component {
 
             <>
                 <Sidebar
-                  as={Menu}
-                  animation='push'
-                  icon='labeled'
-                  inverted
-                  vertical
-                  visible='visible'
-                  direction='left'
-                  width='thin'
+                 {...this.props}
                 >
                   <Link to="/home">
                     <Menu.Item as='a'>
@@ -33,7 +26,7 @@ export default class SideBar extends Component {
                   </Link>
                   <Link to="/profile">
                     <Menu.Item as='a'>
-                        <Icon name='profile id card outline' />
+                        <Icon name='id card outline' />
                         Profile
                   </Menu.Item>
                   </Link>

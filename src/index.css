@@ -4,3 +4,78 @@ html, body, #root {
   margin: 0;
 }
 
+.profile-card {
+  width: 230px;
+  height: 360px;
+  border-radius: 10px;
+  background-color: #f5f6f7;
+  box-shadow: -4px -2px 4px 0px  #ffffff, 4px 2px 6px 0px #DFE4EA;
+  font-family: 'Roboto', sans-serif;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.profile-card-head {
+height: 44%;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.profile-card-body {
+  text-align: center;
+}
+
+.profile-img {
+  border-radius: 50%;
+  position: absolute;
+  top: 35px;
+  width: 85px;
+  height: 85px;
+  border: 3px solid #f1f8fd;
+  box-shadow:
+  20px 20px 20px rgba(0,0,0,0.07),
+  -20px -20px 20px rgba(255,255,255,0.7),
+  6px 6px 6px rgba(0,0,0,0.09),
+  -6px -6px 6px rgba(255,255,255,0.9);
+}
+
+.profile-img::after {
+content: "";
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #f1f8fd;
+  display: block;
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  margin: -27.5px 0 0 -27.5px;
+  box-shadow:
+    inset 5px 5px 5px rgba(0,0,0,0.07),
+    inset -5px -5px 5px rgba(255,255,255,0.7);
+}
+
+.profile-acc {
+position: absolute;
+z-index: 1;
+font-size: 3.7rem;
+color: #807e7e;
+top: 5px;
+left: 20px;
+}
+
+.profile-name {
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+.profile-desc {
+  margin-top: 5px;
+  font-size: 13px;
+  font-weight: 500;
+  color: black;
+  opacity: 0.8;
+  margin-bottom: 50px;
+}
+

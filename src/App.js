@@ -14,6 +14,7 @@ import Register from './pages/Register.jsx';
 import Home from './pages/Home.jsx';
 import Profile from './pages/Profile.jsx';
 import Notfound from './pages/Notfound.jsx';
+import Test from './pages/test.jsx';
 
 import NavBar from './components/Navbar';
 
@@ -48,6 +49,7 @@ export default class App extends Component {
               <Route exact path='/' component={Login}/>
               <Route exact path='/home' component={Home}/>
               <Route exact path='/profile' component={Profile}/>
+              <Route exact path='/test' component={Test}/>
               <Route component={Notfound}/>
             </Switch>
         </Router>
