@@ -41,9 +41,9 @@ export default class Register extends Component {
   }
 
   validateForm = () => {
-    const { fullname, emailValid, passwordValid } = this.state;
+    const { fullnameValid, emailValid, passwordValid } = this.state;
     this.setState({
-      formValid: fullname && emailValid && passwordValid,
+      formValid: fullnameValid && emailValid && passwordValid,
     });
   }
 
@@ -56,12 +56,12 @@ export default class Register extends Component {
     let fullnameValid = true;
     const errorMsg = { ...this.state.errorMsg };
 
-    if (fullname.length > 25) {
-      fullnameValid = false;
-      errorMsg.fullname = 'Fullname too long character';
-    } else if (fullname === '') {
+    if (fullname === '') {
       fullnameValid = false;
       errorMsg.fullname = 'Fullname required';
+    } else if (fullname.length > 25) {
+      fullnameValid = false;
+      errorMsg.fullname = 'Fullname too long character';
     }
     this.setState({ fullnameValid, errorMsg }, this.validateForm);
   }
@@ -74,16 +74,15 @@ export default class Register extends Component {
     const { email } = this.state;
     let emailValid = true;
     const errorMsg = { ...this.state.errorMsg };
-
-    if (email.length < 3) {
+    if (email === '') {
+      emailValid = false;
+      errorMsg.email = 'Email required';
+    } else if (email.length < 3) {
       emailValid = false;
       errorMsg.email = 'Must be at least 3 characters long';
     } else if (!email.includes('@')) {
       emailValid = false;
       errorMsg.email = 'Invalid Email';
-    } else if (email === '') {
-      emailValid = false;
-      errorMsg.email = 'Email required';
     }
 
     this.setState({ emailValid, errorMsg }, this.validateForm);
@@ -103,7 +102,10 @@ export default class Register extends Component {
     const numeric = new RegExp('^(?=.*[0-9])');
     const symbol = new RegExp('^(?=.*?[#?!@$%^&*-])');
 
-    if (password.length < 8) {
+    if (password === '') {
+      passwordValid = false;
+      errorMsg.password = 'Password required';
+    } else if (password.length < 8) {
       passwordValid = false;
       errorMsg.password = 'Password too short';
     } else if (!lowercase.test(password)) {
@@ -118,9 +120,6 @@ export default class Register extends Component {
     } else if (!symbol.test(password)) {
       passwordValid = false;
       errorMsg.password = 'At least one special character';
-    } else if (password === '') {
-      passwordValid = false;
-      errorMsg.password = 'Password required';
     }
 
     this.setState({ passwordValid, errorMsg }, this.validateForm);
@@ -175,8 +174,8 @@ export default class Register extends Component {
                               valid={this.state.passwordValid}
                               message={this.state.errorMsg.password} />
                             </Form.Field>
-                            <Button type='submit' disabled={!formValid}>Register</Button>
-                            <Link className="ui secondary button" to='/login'>Login</Link>
+                            <Button type='submit' disabled={!formValid} primary>Register</Button>
+                            <Link className="ui secondary button" to='/'>Login</Link>
                             </Form>
                         </Card.Content>
                     </Card>

@@ -28,14 +28,17 @@ export default class Profile extends Component {
   }
 
   fetchData = () => {
-    const email = this.props.location.state;
-    const userData = JSON.parse(localStorage.getItem(email));
+    const getSession = JSON.parse(localStorage.getItem('session'));
+    if (!getSession) {
+      this.props.history.push('/login');
+    }
+    const userData = JSON.parse(localStorage.getItem(getSession.email));
     this.setState({ userData });
   }
 
   onLogout = () => {
     localStorage.removeItem('session');
-    this.props.history.push('/login');
+    this.props.history.push('/');
   }
 
   render() {

@@ -1,19 +1,39 @@
 import React, { Component } from 'react';
 import Styled from 'styled-components';
-import { Containter, Container } from 'semantic-ui-react';
+import {
+  Header,
+  Segment,
+  Sidebar,
+} from 'semantic-ui-react';
+
+import SideBar from '../components/SideBar';
 
 const Content = Styled.div`
-    width: 100%;
     height: 100%;
+    width: 100%;
     `;
 
 export default class Home extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeItem: 'home',
+    };
+  }
+
   render() {
     return (
             <>
-                <Content>
-
-                </Content>
+            <Content>
+               <Sidebar.Pushable as={Segment}>
+                <SideBar/>
+                <Sidebar.Pusher>
+                  <Segment basic>
+                    <Header as='h3'>Application Content</Header>
+                  </Segment>
+                </Sidebar.Pusher>
+              </Sidebar.Pushable>
+            </Content>
             </>
     );
   }

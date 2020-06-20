@@ -39,6 +39,7 @@ export default class Login extends Component {
       passwordValid: false,
       formValid: false,
       errorMsg: {},
+      isLoading: false,
     };
   }
 
@@ -64,15 +65,15 @@ export default class Login extends Component {
     let emailValid = true;
     const errorMsg = { ...this.state.errorMsg };
 
-    if (email.length < 3) {
+    if (email === '') {
+      emailValid = false;
+      errorMsg.email = 'Email required';
+    } else if (email.length < 3) {
       emailValid = false;
       errorMsg.email = 'Must be at least 3 characters long';
     } else if (!email.includes('@')) {
       emailValid = false;
       errorMsg.email = 'Invalid Email';
-    } else if (email === '') {
-      emailValid = false;
-      errorMsg.email = 'Email required';
     }
 
     this.setState({ emailValid, errorMsg }, this.validateForm);
@@ -87,12 +88,12 @@ export default class Login extends Component {
     let passwordValid = true;
     const errorMsg = { ...this.state.errorMsg };
 
-    if (password.length < 3) {
-      passwordValid = false;
-      errorMsg.password = 'Must be at least 3 characters long';
-    } else if (password === '') {
+    if (password === '') {
       passwordValid = false;
       errorMsg.password = 'Password required';
+    } else if (password.length < 3) {
+      passwordValid = false;
+      errorMsg.password = 'Must be at least 3 characters long';
     }
 
     this.setState({ passwordValid, errorMsg }, this.validateForm);
@@ -100,33 +101,42 @@ export default class Login extends Component {
 
   handlePost = (event) => {
     event.preventDefault();
-    const userData = {
-      email: this.state.email,
-      password: this.state.password,
-    };
-    const isExist = JSON.parse(localStorage.getItem(userData.email));
-    if (isExist) {
-      if (isExist.email === this.state.email && isExist.password === this.state.password) {
-        localStorage.setItem('session', isExist.email);
-        this.props.history.push('/profile', isExist.email);
-      } else {
-        Swal.fire({
-          title: 'Sorry !',
-          text: 'Password Wrong',
-          icon: 'warning',
-        });
-      }
-    } else {
-      Swal.fire({
-        title: 'Sorry !',
-        text: 'Please Register first !',
-        icon: 'warning',
+    this.setState({ isLoading: true });
+    setTimeout(() => {
+      this.setState({ isLoading: false }, () => {
+        const userData = {
+          email: this.state.email,
+          password: this.state.password,
+        };
+        const isExist = JSON.parse(localStorage.getItem(userData.email));
+        if (isExist) {
+          if (isExist.email === this.state.email && isExist.password === this.state.password) {
+            const userSession = {
+              email: this.state.email,
+              exp: new Date().getTime() + 1000 * 5,
+            };
+            localStorage.setItem('session', JSON.stringify(userSession));
+            this.props.history.push('/home', userSession);
+          } else {
+            Swal.fire({
+              title: 'Sorry !',
+              text: 'Password Wrong',
+              icon: 'warning',
+            });
+          }
+        } else {
+          Swal.fire({
+            title: 'Sorry !',
+            text: 'Please Register first !',
+            icon: 'warning',
+          });
+        }
       });
-    }
+    }, 5000);
   }
 
   render() {
-    const { formValid } = this.state;
+    const { formValid, isLoading } = this.state;
     return (
       <>
          <Content>
@@ -136,19 +146,19 @@ export default class Login extends Component {
                       <Form onSubmit={this.handlePost}>
                       <Form.Field>
                       <label>Email</label>
-                      <input name='email' value={this.state.email} onChange={(e) => this.updateEmail(e.target.value)} type='email' placeholder='Email' />
+                      <input name='email' readOnly={isLoading} value={this.state.email} onChange={(e) => this.updateEmail(e.target.value)} type='email' placeholder='Email' />
                       <ValidationMessage
                         valid={this.state.emailValid}
                         message={this.state.errorMsg.email} />
                       </Form.Field>
                       <Form.Field>
                       <label>Password</label>
-                      <input name='password' value={this.state.password} onChange={(e) => this.updatePassword(e.target.value)} placeholder='Password' />
+                      <input name='password' readOnly={isLoading} value={this.state.password} onChange={(e) => this.updatePassword(e.target.value)} placeholder='Password' />
                       <ValidationMessage
                         valid={this.state.passwordValid}
                         message={this.state.errorMsg.password} />
                       </Form.Field>
-                      <Button type='submit' disabled={!formValid}>Login</Button>
+                      <Button type='submit' disabled={!formValid} loading={isLoading} primary>Login</Button>
                       <Link className="ui secondary button" to='/register'>Register</Link>
                       </Form>
                   </Card.Content>
