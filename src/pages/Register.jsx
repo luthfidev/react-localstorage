@@ -37,6 +37,7 @@ export default class Register extends Component {
       passwordValid: false,
       formValid: false,
       errorMsg: {},
+      isLoading: false,
     };
   }
 
@@ -127,25 +128,36 @@ export default class Register extends Component {
 
   handlePost = (event) => {
     event.preventDefault();
-    const registerData = {
-      fullname: this.state.fullname,
-      email: this.state.email,
-      password: this.state.password,
-    };
-    const email = JSON.parse(localStorage.getItem(registerData.email));
-    if (email) {
-      Swal.fire({
-        title: 'Welcome !',
-        text: 'Email is Exist',
-        icon: 'warning',
+    this.setState({ isLoading: true });
+    setTimeout(() => {
+      this.setState({ isLoading: false }, () => {
+        const registerData = {
+          fullname: this.state.fullname,
+          email: this.state.email,
+          password: this.state.password,
+        };
+        const email = JSON.parse(localStorage.getItem(registerData.email));
+        if (email) {
+          Swal.fire({
+            title: 'Sorry !',
+            text: 'Email is Exist',
+            icon: 'warning',
+          });
+        } else {
+          localStorage.setItem(registerData.email, JSON.stringify(registerData));
+          Swal.fire({
+            title: 'Success !',
+            text: 'Register success',
+            icon: 'success',
+          });
+          this.props.history.push('/');
+        }
       });
-    } else {
-      localStorage.setItem(registerData.email, JSON.stringify(registerData));
-    }
+    }, 5000);
   }
 
   render() {
-    const { formValid } = this.state;
+    const { formValid, isLoading } = this.state;
     return (
             <>
                 <Content>
@@ -155,26 +167,26 @@ export default class Register extends Component {
                             <Form onSubmit={this.handlePost}>
                             <Form.Field>
                             <label>Full Name</label>
-                            <input name="fullname" value={this.state.fullname} onChange={(e) => this.updateFullname(e.target.value)} placeholder='First Name' />
+                            <input name="fullname" readOnly={isLoading} value={this.state.fullname} onChange={(e) => this.updateFullname(e.target.value)} placeholder='First Name' />
                             <ValidationMessage
                               valid={this.state.fullnameValid}
                               message={this.state.errorMsg.fullname} />
                             </Form.Field>
                             <Form.Field>
                             <label>Email</label>
-                            <input name="email" value={this.state.email} onChange={(e) => this.updateEmail(e.target.value)} placeholder='Email' />
+                            <input name="email" readOnly={isLoading} value={this.state.email} onChange={(e) => this.updateEmail(e.target.value)} placeholder='Email' />
                             <ValidationMessage
                               valid={this.state.emailValid}
                               message={this.state.errorMsg.email} />
                             </Form.Field>
                             <Form.Field>
                             <label>Password</label>
-                            <input name="password" value={this.state.password} onChange={(e) => this.updatePassword(e.target.value)} placeholder='Password' />
+                            <input name="password" readOnly={isLoading} value={this.state.password} onChange={(e) => this.updatePassword(e.target.value)} placeholder='Password' />
                             <ValidationMessage
                               valid={this.state.passwordValid}
                               message={this.state.errorMsg.password} />
                             </Form.Field>
-                            <Button type='submit' disabled={!formValid} primary>Register</Button>
+                            <Button type='submit' disabled={!formValid} loading={isLoading} primary>Register</Button>
                             <Link className="ui secondary button" to='/'>Login</Link>
                             </Form>
                         </Card.Content>
