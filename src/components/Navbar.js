@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import Styled from 'styled-components';
 import { Button, Menu, Dropdown } from 'semantic-ui-react';
 
@@ -7,8 +8,7 @@ const Content = Styled.div`
     width: 100%;
 
     `;
-
-export default class NavBar extends Component {
+class NavBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -16,7 +16,7 @@ export default class NavBar extends Component {
     };
   }
 
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+  // handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
   onLogout = () => {
     localStorage.removeItem('session');
@@ -57,3 +57,6 @@ export default class NavBar extends Component {
     );
   }
 }
+
+export default withRouter(NavBar);
+// export default NavBar;
