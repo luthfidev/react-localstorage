@@ -42,7 +42,7 @@ export default class App extends Component {
     return (
       <>
         <BrowserRouter>
-        <Router history={history}>
+        {/* <Router history={history}> */}
           <NavBar isLogin={this.state.isLogin} check={() => this.checkLogin()}/>
             <Switch>
               <Route exact path='/register' component={Register}/>
@@ -52,7 +52,7 @@ export default class App extends Component {
               <Route exact path='/test' component={Test}/>
               <Route component={Notfound}/>
             </Switch>
-        </Router>
+        {/* </Router> */}
         </BrowserRouter>
       </>
     );
