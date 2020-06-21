@@ -56,8 +56,7 @@ export default class Home extends Component {
       spaced: 'right',
       src: require('../assets/avatar.png'),
     };
-    const { isLoading } = this.state;
-    const { visible } = this.state;
+    const { visible, isLoading } = this.state;
     return (
             <>
             <Content>
